@@ -1,0 +1,3 @@
+symfony --full front-end
+composer.phar require symfony/workflow'
+

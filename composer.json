@@ -1,6 +1,6 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^7.1.3",
         "ext-ctype": "*",
@@ -23,9 +23,11 @@
         "symfony/twig-bundle": "4.2.*",
         "symfony/validator": "4.2.*",
         "symfony/web-link": "4.2.*",
+        "symfony/workflow": "4.2.*",
         "symfony/yaml": "4.2.*"
     },
     "require-dev": {
+        "psr/log": "~1.0",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
@@ -71,6 +73,7 @@
     "conflict": {
         "symfony/symfony": "*"
     },
+    "minimum-stability": "dev",
     "extra": {
         "symfony": {
             "allow-contrib": false,
