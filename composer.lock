@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1ec540b76f4366b2a7cafd074cbba6e",
+    "content-hash": "e9aec96b72e3e28c23f8bfd9cbe6a889",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -6338,6 +6338,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "sensio/framework-extra-bundle": 20,
         "symfony/webpack-encore-bundle": 20
     },
     "prefer-stable": false,
