@@ -1,8 +1,11 @@
+parameters:
+    env(CACHE_PREFIX_SEED): 'jollyblume/front-end'
+
 framework:
     cache:
         # Put the unique name of your app here: the prefix seed
         # is used to compute stable namespaces for cache keys.
-        #prefix_seed: your_vendor_name/app_name
+        prefix_seed: '%env(CACHE_PREFIX_SEED)'
 
         # The app cache caches to the filesystem by default.
         # Other options include:
