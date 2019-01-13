@@ -38,22 +38,6 @@
       {% block footer %}{% endblock footer %}
       {% block foot_script %}
         {{ encore_entry_script_tags('app') }}
-
-        {% block foot_script_start %}
-        {% endblock foot_script_start %}
-
-        {% block data_toggle %}
-          <script type="text/javascript">
-            $(document).ready(function() {
-              $('[data-toggle="tooltip"]').tooltip();
-              $('[data-toggle="popover"]').popover();
-              {% block document_ready %}{% endblock document_ready %}
-            });
-          </script>
-
-          {% block foot_script_end %}
-          {% endblock foot_script_end %}
-        {% endblock data_toggle %}
       {% endblock foot_script %}
       {% block foot_script_extra %}{% endblock foot_script_extra %}
     {% endblock body %}
