@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Marking;
 
 use Symfony\Component\Workflow\Marking;
 use Ramsey\Uuid\Uuid;
 
 /**
- * MultiTenantMarkingStore
+ * MultiTenantMarkingStoreBackend
  *
- * MultiTenantMarkingStore is a multi-tenant
+ * MultiTenantMarkingStoreBackend persists the markings for multiple workflows and
+ * workflow subjects (tokens).
  */
-class MultiTenantMarkingStore {
+class MultiTenantMarkingStoreBackend {
     const MARKING_UUID_NAME = 'workflow.marking';
     const STORE_UUID_NAME = 'workflow.marking-store';
 
