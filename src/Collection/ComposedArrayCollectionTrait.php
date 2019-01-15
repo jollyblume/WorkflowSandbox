@@ -12,8 +12,6 @@ use Doctrine\Common\Collections\Criteria;
 
 trait ComposedArrayCollectionTrait
 {
-    use \App\Traits\PropertyAccessorTrait;
-
     /**
      * composedCollection
      *
@@ -98,7 +96,7 @@ trait ComposedArrayCollectionTrait
      */
     public function offsetExists($offset)
     {
-        return $this->getComposedChildren()->offsetExists($offset);
+        return $this->containsKey($offset);
     }
 
     /**
@@ -108,7 +106,7 @@ trait ComposedArrayCollectionTrait
      */
     public function offsetGet($offset)
     {
-        return $this->getComposedChildren()->offsetGet($offset);
+        return $this->get($offset);
     }
 
     /**
@@ -118,7 +116,12 @@ trait ComposedArrayCollectionTrait
      */
     public function offsetSet($offset, $value)
     {
-        return $this->getComposedChildren()->offsetSet($offset, $value);
+        if (!isset($offset)) {
+            $this->add($value);
+            return;
+        }
+
+        $this->set($offset, $value);
     }
 
     /**
@@ -128,7 +131,7 @@ trait ComposedArrayCollectionTrait
      */
     public function offsetUnset($offset)
     {
-        return $this->getComposedChildren()->offsetUnset($offset);
+        $this->remove($offset);
     }
 
     /**
@@ -192,7 +195,7 @@ trait ComposedArrayCollectionTrait
      */
     public function set($key, $value)
     {
-        return $this->getComposedChildren()->set($key, $value);
+        $this->getComposedChildren()->set($key, $value);
     }
 
     /**
@@ -294,7 +297,7 @@ trait ComposedArrayCollectionTrait
      */
     public function clear()
     {
-        return $this->getComposedChildren()->clear();
+        $this->getComposedChildren()->clear();
     }
 
     /**
