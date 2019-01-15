@@ -21,13 +21,20 @@ trait PropertyAccessorTrait
         return $propertyAccessor;
     }
 
-    private function getPropertyValue($object, string $property) {
+    protected function getPropertyValue(object $object, string $property) {
         $propertyAccessor = $this->getPropertyAccessor();
         return $propertyAccessor->getValue($object, $property);
     }
 
-    private function setPropertyValue($object, string $property, $value) {
+    protected function setPropertyValue(object $object, string $property, $value) :self {
         $propertyAccessor = $this->getPropertyAccessor();
         $propertyAccessor->setValue($object, $property, $value);
+        return $this;
+    }
+
+    protected function isPropertyValueReadable(object $object, string $property) :bool {
+        $propertyAccessor = $this->getPropertyAccessor();
+        $isReadable = $propertyAccessor->isReadable($object, $property);
+        return $isReadable;
     }
 }

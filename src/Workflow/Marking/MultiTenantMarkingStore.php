@@ -13,6 +13,10 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use App\Workflow\MultiTenantMarkingStoreBackend;
+use App\Exception\PropImmutableException;
+use App\Exception\OutOfScopeException;
+use App\Exception\PropRequiredException;
+
 
 /**
  * MultiTenantMarkingStore
@@ -64,7 +68,35 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
     }
 
     public function getMarkingId($subject) {
-        return $this->getPropertyValue($subject, self::MARKING_ID_PROPERTY);
+        $markingId = $this->getPropertyValue($subject, self::MARKING_ID_PROPERTY);
+        return $markingId;
+    }
+
+    public function setMarkingId($subject) {
+        $markingId = $this->getMarkingId($subject);
+        if ($markingId) {
+            $contextParameters = [
+                'object' = $subject,
+                'property' = self::MARKING_ID_PROPERTY,
+                'markingId' = $markingId,
+            ];
+            throw new PropImmutableException($contextParameters);
+        }
+        if (!$markingId && !$this->isPropertyValueReadable($subject, self::MARKING_ID_PROPERTY)) {
+            $contextParameters = [
+                'object' = $subject,
+                'property' = self::MARKING_ID_PROPERTY,
+                'debug' = 'subject must support MarkableSubjectInterface',
+            ];
+            throw new OutOfScopeException($contextParameters);
+        }
+        $markingId = $this->backend->createMarkingId();
+        $this->setPropertyValue(
+            $subject,
+            self::MARKING_ID_PROPERTY,
+            $markingId
+        );
+        return $markingId;
     }
 
     public function getMarking($subject) {
@@ -76,11 +108,19 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
         return $this->backend->getMarking($this->markingStoreId, $markingId);
     }
 
-    public function setMarking($subject, BaseMarking $marking) {
+    public function setMarking(BaseMarking $marking, $subject = null) {
+        if (!$marking instanceof Marking && null === $subject) {
+            $contextParameters = [
+                'debug' = 'subject required when using base marking class',
+            ];
+            throw new PropRequiredException($contextParameters);
+        }
         if (!$marking instanceof Marking) {
+            $markingId = $this->getMarkingId($subject) ;
+            if (!$markingId) {
+                $markingId = $this->setMarkingId($subject);
+            }
             $places = $marking->getPlaces();
-            // todo validate $subject is a UUID?
-            $subject = $this->backend->createMarkingId();
             $marking = new Marking($subject, $places);
         }
 

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use App\Exception\ExceptionContext;
 use App\Exception\PropImmutableException;
+use App\Exception\OutOfScopeException;
 
 /**
  * ComposedCollectionTrait
@@ -68,61 +69,98 @@ trait ComposedCollectionTrait
      *
      * @var string $semanticParameter
      */
-    private $semanticParameter;
+    private $semanticParameter = 'Child';
+
+    public function getSemanticParameter() {
+        return $this->semanticParameter;
+    }
 
     /**
      * Name of the property containing the elements key
      *
      * @var string $nameProperty
      */
-    private $keyProperty = 'name';
+    private $keyProperty;
+
+    public function getKeyProperty() {
+        return $this->keyProperty;
+    }
 
     /**
      * composedCollection
      *
      * @var ArrayCollection $children
      */
-    private $children = new ArrayCollection();
+    private $children;
+
+    protected function getComposedChildren() {
+        $children = $this->children;
+        if (!$children) {
+            $children = $this->initializeComposedChildren();
+        }
+        return $children;
+    }
+
+    protected function initializeComposedChildren(array $elements = []) {
+        $children = new ArrayCollection($elements);
+        $this->children = $children;
+        return $children;
+    }
 
     protected function removeChildKey(string $key) {
-        return $this->children->remove($key);
+        return $this->getComposedChildren()->remove($key);
     }
 
     protected function removeChild($child) {
-        return $this->children->removeElement($child);
+        return $this->getComposedChildren()->removeElement($child);
     }
 
-    protected function hasChildKey() {
-        return $this->children->containsKey(string $key);
+    protected function hasChildKey(string $key) {
+        return $this->getComposedChildren()->containsKey($key);
     }
 
     protected function hasChild($child) {
-        return $this->children->contains($child);
+        return $this->getComposedChildren()->contains($child);
     }
 
     protected function getChild(string $key) {
-        return $this->children->get($key);
+        return $this->getComposedChildren()->get($key);
     }
 
-    protected function setChild(string $key, $child) {
-        $this->children->set($key, $child);
+    protected function setChild(?string $key, $child) {
+        $keyProperty = $this->getKeyProperty();
+        if (null !== $key && !empty($keyProperty)) {
+            $expectedKey = $this->getPropertyValue($child, $keyProperty);
+            if ($expectedKey !== $key) {
+                $contextParameters = [
+                    'debug' => 'key must match child key field'
+                ];
+                throw new OutOfScopeException($contextParameters);
+            }
+        }
+        if (null === $key && !empty($keyProperty)) {
+            $key = $this->getPropertyValue($child, $keyProperty);
+        }
+        $this->getComposedChildren()->set($key, $child);
         return $this;
     }
 
     protected function addChild($child) {
-        $keyProperty = $this->keyProperty;
-        $key = $this->getPropertyValue($child, $keyProperty);
-        $this->setChild(string $key, $child);
-    }
-
-    protected function addChildIfMissing($child) {
-        $keyProperty = $this->keyProperty;
-        $key = $this->getPropertyValue($child, $keyProperty);
-        if (!$this->hasChildKey($key)) {
-            $this->setChild(string $key, $child);
+        $keyProperty = $this->getKeyProperty();
+        if (is_object($child) && $keyProperty) {
+            $this->setChild(null, $child);
         }
+        if (!is_object($child) || !$keyProperty) {
+            $this->getComposedChildren()->add($child);
+        }
+        return $this;
     }
 
+    // protected function addChildIfMissing($child) {
+    //     if (!$this->hasChild($child)) {
+    //         $this->addChild($child);
+    //     }
+    // }
 
     /**
      * Use sprintf to build a method name from a template and $semanticParameter.
@@ -146,7 +184,7 @@ trait ComposedCollectionTrait
      */
     public function first()
     {
-        return $this->children->first();
+        return $this->getComposedChildren()->first();
     }
 
     /**
@@ -154,7 +192,7 @@ trait ComposedCollectionTrait
      */
     public function last()
     {
-        return $this->children->last();
+        return $this->getComposedChildren()->last();
     }
 
     /**
@@ -162,7 +200,7 @@ trait ComposedCollectionTrait
      */
     public function key()
     {
-        return $this->children->key();
+        return $this->getComposedChildren()->key();
     }
 
     /**
@@ -170,7 +208,7 @@ trait ComposedCollectionTrait
      */
     public function next()
     {
-        return $this->children->next();
+        return $this->getComposedChildren()->next();
     }
 
     /**
@@ -178,7 +216,7 @@ trait ComposedCollectionTrait
      */
     public function current()
     {
-        return $this->children->current();
+        return $this->getComposedChildren()->current();
     }
 
     /**
@@ -274,7 +312,7 @@ trait ComposedCollectionTrait
      */
     public function indexOf($element)
     {
-        return $this->children->indexOf($element);
+        return $this->getComposedChildren()->indexOf($element);
     }
 
     /**
@@ -292,7 +330,7 @@ trait ComposedCollectionTrait
      */
     public function getKeys()
     {
-        return $this->children->getKeys();
+        return $this->getComposedChildren()->getKeys();
     }
 
     /**
@@ -300,7 +338,7 @@ trait ComposedCollectionTrait
      */
     public function getValues()
     {
-        return $this->children->getValues();
+        return $this->getComposedChildren()->getValues();
     }
 
     /**
@@ -308,7 +346,7 @@ trait ComposedCollectionTrait
      */
     public function count()
     {
-        return $this->children->count();
+        return $this->getComposedChildren()->count();
     }
 
     /**
@@ -336,7 +374,7 @@ trait ComposedCollectionTrait
      */
     public function isEmpty()
     {
-        return $this->children->isEmpty();
+        return $this->getComposedChildren()->isEmpty();
     }
 
     /**
@@ -346,7 +384,7 @@ trait ComposedCollectionTrait
      */
     public function getIterator()
     {
-        return $this->children->getIterator();
+        return $this->getComposedChildren()->getIterator();
     }
 
     /**
@@ -354,7 +392,7 @@ trait ComposedCollectionTrait
      */
     public function exists(Closure $predicate)
     {
-        return $this->children->exists($predicate);
+        return $this->getComposedChildren()->exists($predicate);
     }
 
     /**
@@ -364,7 +402,7 @@ trait ComposedCollectionTrait
      */
     public function map(Closure $func)
     {
-        return $this->children->map($func);
+        return $this->getComposedChildren()->map($func);
     }
 
     /**
@@ -374,7 +412,7 @@ trait ComposedCollectionTrait
      */
     public function filter(Closure $predicate)
     {
-        return $this->children->filter($predicate);
+        return $this->getComposedChildren()->filter($predicate);
     }
 
     /**
@@ -382,7 +420,7 @@ trait ComposedCollectionTrait
      */
     public function forAll(Closure $predicate)
     {
-        return $this->children->forAll($predicate);
+        return $this->getComposedChildren()->forAll($predicate);
     }
 
     /**
@@ -390,7 +428,7 @@ trait ComposedCollectionTrait
      */
     public function partition(Closure $predicate)
     {
-        return $this->children->partition($predicate);
+        return $this->getComposedChildren()->partition($predicate);
     }
 
     /**
@@ -400,7 +438,7 @@ trait ComposedCollectionTrait
      */
     public function __toString()
     {
-        return $this->children->__toString();
+        return $this->getComposedChildren()->__toString();
     }
 
     /**
@@ -408,7 +446,7 @@ trait ComposedCollectionTrait
      */
     public function slice($offset, $length = null)
     {
-        return $this->children->slice($offset, $length);
+        return $this->getComposedChildren()->slice($offset, $length);
     }
 
     /**
@@ -416,7 +454,7 @@ trait ComposedCollectionTrait
      */
     public function toArray()
     {
-        return $this->children->toArray();
+        return $this->getComposedChildren()->toArray();
     }
 
     /**
@@ -424,7 +462,7 @@ trait ComposedCollectionTrait
      */
     public function matching(Criteria $criteria)
     {
-        return $this->children->matching($criteria);
+        return $this->getComposedChildren()->matching($criteria);
     }
 
     /**
