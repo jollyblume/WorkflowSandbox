@@ -11,6 +11,6 @@ use Doctrine\Common\Collections\Selectable;
  * ComposedCollectionInterface extends the doctrine/collections interfaces
  * implemented by ArrayCollection.
  */
-interface ComposedCollectionInterface extends Collection, Selectable
+interface ComposedArrayCollectionInterface extends Collection, Selectable
 {
 }
