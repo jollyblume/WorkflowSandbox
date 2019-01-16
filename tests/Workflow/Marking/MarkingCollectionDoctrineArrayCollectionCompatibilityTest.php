@@ -25,7 +25,6 @@ class MarkingCollectionDoctrineArrayCollectionCompatibilityTest extends BaseArra
                 return $key;
             }
         };
-        var_dump($element->getMarkingId());
         return $element;
     }
 }

@@ -35,12 +35,11 @@ abstract class BaseArrayCollectionTestShimTest extends BaseArrayCollectionTest {
     {
         $elements   = $this->provideDifferentElements()['mixed'][0];
         $collection = $this->buildCollection($elements);
-die(var_dump($elements));
         self::assertEquals($elements['test.id.bA'], $collection->remove('test.id.bA'));
         unset($elements['test.id.bA']);
         self::assertEquals(null, $collection->remove('non-existent'));
         unset($elements['non-existent']);
-        self::assertEquals($elements['test.id.6'], $collection->remove('test.id.6'));
+        self::assertEquals($elements[0], $collection->remove('test.id.6'));
         unset($elements['test.id.6']);
         self::assertEquals(null, $collection->remove('non-existent'));
         unset($elements['non-existent']);
