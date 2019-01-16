@@ -10,6 +10,7 @@ use Closure;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use App\Traits\PropertyAccessorTrait;
+use App\Exception\OutOfScopeException;
 
 trait KeyAwareComposedArrayCollectionTrait
 {
@@ -23,11 +24,45 @@ trait KeyAwareComposedArrayCollectionTrait
     private $keyPropertyNames;
 
     /**
+     * Classes included in $keyPropertyNames are the only collection members.
+     *
+     * An exception is thrown when attempting to add a non-member
+     *
+     * @var bool $strictCollectionMembership
+     */
+    private $strictCollectionMembership = false;
+
+    /**
      * composedCollection
      *
      * @var ArrayCollection $children
      */
     private $children;
+
+    public function isStrictCollectionMembership() {
+        return boolval($this->strictCollectionMembership);
+    }
+
+    public function isCollectionMember($element) {
+        $keyPropertyName = $this->getKeyPropertyName($element);
+        if (null !== $keyPropertyName) {
+            $isReadable = $this->isPropertyValueReadable($element, $keyPropertyName);
+            if ($isReadable) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function assertElementIsAcceptable($element) {
+        if ($this->isStrictCollectionMembership() && !$this->isCollectionMember($element)) {
+            $contextParameters = [
+                'element' => $element,
+            ];
+
+            throw new OutOfScopeException($contextParameters);
+        }
+    }
 
     protected function setKeyPropertyNames($keyPropertyNames) {
         if (is_array($keyPropertyNames)) {
@@ -114,6 +149,7 @@ trait KeyAwareComposedArrayCollectionTrait
     protected function initializeComposedChildren(array $elements = []) {
         $keyedElements = [];
         foreach ($elements as $key => $value) {
+            $this->assertElementIsAcceptable($value);
             $this->assertExpectedElementKey($key, $value);
             if (!is_string($key)) {
                 $valueKey = $this->getKeyFromElement($value) ?? null;
@@ -289,6 +325,7 @@ trait KeyAwareComposedArrayCollectionTrait
      */
     public function set($key, $value)
     {
+        $this->assertElementIsAcceptable($value);
         $this->assertExpectedElementKey($key, $value);
         if (!is_string($key)) {
             $valueKey = $this->getKeyFromElement($value) ?? null;

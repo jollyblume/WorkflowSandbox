@@ -6,7 +6,8 @@ class KeyAwareComposedArrayCollection implements ComposedArrayCollectionInterfac
 {
     use KeyAwareComposedArrayCollectionTrait;
 
-    public function __construct($keyPropertyNames, array $elements = []) {
+    public function __construct($keyPropertyNames, array $elements = [], bool $strictCollectionMembership = false) {
+        $this->strictCollectionMembership = $strictCollectionMembership;
         $this->setKeyPropertyNames($keyPropertyNames);
         if (!empty($elements)) {
             $this->initializeComposedChildren($elements);

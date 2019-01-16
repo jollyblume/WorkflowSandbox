@@ -11,6 +11,7 @@ class MarkingCollection implements ComposedArrayCollectionInterface {
     private $markingId;
 
     public function __construct(string $markingId, array $elements = []) {
+        $this->strictCollectionMembership = true;
         $this->markingId = $markingId;
         $this->setKeyPropertyNames('markingId');
         if ($elements) {
