@@ -23,6 +23,7 @@ trait ComposedArrayCollectionTrait
         $children = $this->children;
         if (!$children) {
             $children = $this->initializeComposedChildren();
+            $this->children = $children;
         }
         return $children;
     }
