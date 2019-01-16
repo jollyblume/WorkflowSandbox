@@ -3,7 +3,6 @@
 namespace App\Workflow\Marking;
 
 use App\Collection\ComposedArrayCollectionInterface;
-use App\Collection\KeyAwareComposedArrayCollection;
 use App\Collection\KeyAwareComposedArrayCollectionTrait;
 
 class MarkingCollection implements ComposedArrayCollectionInterface {
