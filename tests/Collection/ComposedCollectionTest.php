@@ -1,9 +1,5 @@
 <?php
 
-/**
- * forked from doctrine/collections
- */
-
 namespace App\Tests\Collection;
 
 use App\Collection\ComposedArrayCollection;
