@@ -36,7 +36,6 @@ abstract class BaseArrayCollectionTest extends TestCase
     public function testToArray($elements) : void
     {
         $collection = $this->buildCollection($elements);
-
         self::assertSame($elements, $collection->toArray());
     }
 

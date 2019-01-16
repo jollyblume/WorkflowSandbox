@@ -107,7 +107,7 @@ trait KeyAwareComposedArrayCollectionTrait
             return null;
         }
         if (is_string($classname) && !class_exists($classname)) {
-            //todo exception
+            return null;
         }
         $keyPropertyNames = $this->keyPropertyNames;
         if (!array_key_exists($classname, $keyPropertyNames)) {
@@ -133,7 +133,7 @@ trait KeyAwareComposedArrayCollectionTrait
 
     private function assertExpectedElementKey($providedKey, $element) {
         $elementKey = $this->getKeyFromElement($element) ?? null;
-        if ($elementKey && is_string($key) && $elementKey !== $providedKey) {
+        if ($elementKey && is_string($providedKey) && $elementKey !== $providedKey) {
             // todo exception key's must match
         }
     }

@@ -20,4 +20,14 @@ class Marking extends BaseMarking {
     public function getMarkingId() {
         return $this->markingId;
     }
+
+    /**
+     * Returns a string representation of this object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return self::class . '@' . spl_object_hash($this);
+    }
 }

@@ -8,18 +8,18 @@ use App\Collection\KeyAwareComposedArrayCollectionTrait;
 class MarkingStoreCollection implements ComposedArrayCollectionInterface {
     use KeyAwareComposedArrayCollectionTrait;
 
-    private $markingStoreId;
+    private $markingStoreRegistryId;
 
-    public function __construct(string $markingStoreId, array $elements = []) {
+    public function __construct(string $markingStoreRegistryId, array $elements = []) {
         $this->strictCollectionMembership = true;
-        $this->markingStoreId = $markingStoreId;
+        $this->markingStoreRegistryId = $markingStoreRegistryId;
         $this->setKeyPropertyNames('markingStoreId');
         if ($elements) {
             $this->initializeComposedChildren($elements);
         }
     }
 
-    public function getMarkingStoreId() {
-        return $this->markingStoreId;
+    public function getMarkingStoreRegistryId() {
+        return $this->markingStoreRegistryId;
     }
 }
