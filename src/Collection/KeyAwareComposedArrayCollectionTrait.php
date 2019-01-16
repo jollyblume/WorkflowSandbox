@@ -10,7 +10,7 @@ use Closure;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
-trait ComposedArrayCollectionTrait
+trait KeyAwareComposedArrayCollectionTrait
 {
     use ComposedArrayCollectionSharedTrait;
 
