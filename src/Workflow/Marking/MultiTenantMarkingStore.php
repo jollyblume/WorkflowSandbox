@@ -109,7 +109,7 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
     public function getMarkingId($subject) {
         $this->assertValidSubject($subject);
         $markingId = $this->getPropertyValue($subject, self::MARKING_ID_PROPERTY);
-        if (!$markingId) {
+        if (empty($markingId)) {
             $markingId = $this->getMarkingStoreBackend()->createId(self::MARKING_NAME);
             $this->setPropertyValue(
                 $subject,
