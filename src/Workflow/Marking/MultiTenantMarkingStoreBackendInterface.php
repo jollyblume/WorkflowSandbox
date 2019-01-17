@@ -18,11 +18,10 @@ interface MultiTenantMarkingStoreBackendInterface {
      * Persist a workflow marking to the backend
      *
      * @param string $markingStoreId
-     * @param string $markingId
      * @param Marking $marking The workflow marking
      * @return self
      */
-    public function setMarking(string $markingStoreId, string $markingId, Marking $marking);
+    public function setMarking(string $markingStoreId, Marking $marking);
 
     /**
      * Create a new Marking id

@@ -13,6 +13,26 @@ use App\Workflow\Marking\MultiTenantMarkingStoreBackendInterface;
  * workflow subjects (tokens).
  */
 class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInterface {
+    const MARKING_STORE_COLLECTION_NAME = 'workflow.marking-store-collection';
+    const MARKING_STORE_NAME = 'workflow.marking-store';
+
+    /**
+     * @var MarkingStoreCollection $markingStoreCollection
+     */
+    private $markingStoreCollection;
+
+    public function __construct(?MarkingStoreCollection $markingStoreCollection = null) {
+        if (!$markingStoreCollection) {
+            $markingStoreCollectionId = $this->createId(self::MARKING_STORE_COLLECTION_NAME);
+            $markingStoreCollection = new MarkingStoreCollection($markingStoreCollectionId);
+        }
+        $this->MarkingStoreCollection = $markingStoreCollection;
+    }
+
+    protected function getMarkingStoreCollection() {
+        return $this->markingStoreCollection;
+    }
+
     /**
      * Get a workflow marking from the backend
      *
@@ -21,7 +41,17 @@ class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInter
      * @return Marking The workflow marking
      */
     public function getMarking(string $markingStoreId, string $markingId) {
+        $stores = $this->getMarkingStoreCollection();
+        if (!$stores) {
+            return null;
+        }
+        $store = $stores[$markingStoreId] ?? null;
+        if (!$store) {
+            return null;
+        }
 
+        $marking = $store[$markingId] ?? null;
+        return $marking;
     }
 
     /**
@@ -32,8 +62,17 @@ class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInter
      * @param Marking $marking The workflow marking
      * @return self
      */
-    public function setMarking(string $markingStoreId, string $markingId, Marking $marking) {
-
+    public function setMarking(string $markingStoreId, Marking $marking) {
+        $stores = $this->getMarkingStoreCollection();
+        $store = $stores[$markingStoreId] ?? null;
+        if (!$store) {
+            $markingStoreId = $this->createId(self::MARKING_STORE_NAME);
+            $store = new MarkingCollection($markingStoreId);
+            $stores[] = $store;
+        }
+        $markingId = $marking->getMarkingId();
+        $store[$markingId] = $marking;
+        return self;
     }
 
     /**

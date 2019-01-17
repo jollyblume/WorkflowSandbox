@@ -166,9 +166,8 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
         }
         $this->assertIdMatchesMarking($subject, $marking);
 
-        $markingId = $marking->getMarkingId();
         $markingStoreId = $this->getMarkingStoreId();
-        $this->getMarkingStoreBackend()->setMarking($markingStoreId, $markingId, $marking);
+        $this->getMarkingStoreBackend()->setMarking($markingStoreId, $marking);
         return $this;
     }
 }
