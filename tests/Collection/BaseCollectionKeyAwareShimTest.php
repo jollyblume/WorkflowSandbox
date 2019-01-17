@@ -51,30 +51,30 @@ abstract class BaseCollectionKeyAwareShimTest extends BaseCollectionTest
 
     public function testMap() : void
     {
-        $element1 = $this->buildAcceptableElement('test.element1');
-        $element2 = $this->buildAcceptableElement('test.element2');
+        $element1 = $this->buildAcceptableElement('test.element1', false);
+        $element2 = $this->buildAcceptableElement('test.element2', true);
         $this->collection->add($element1);
         $this->collection->add($element2);
         $res = $this->collection->map(static function ($e) {
-            return $e->getName();
+            return $e->getOther();
         });
         $expected = [
-            'test.element1' => 'test.element1',
-            'test.element2' => 'test.element2',
+            'test.element1' => false,
+            'test.element2' => true,
         ];
         self::assertEquals($expected, $res->toArray());
     }
 
     public function testFilter() : void
     {
-        $element1 = $this->buildAcceptableElement('test.element1');
-        $element2 = $this->buildAcceptableElement('test.element2');
-        $element3 = $this->buildAcceptableElement('test.element3');
+        $element1 = $this->buildAcceptableElement('test.element1', false);
+        $element2 = $this->buildAcceptableElement('test.element2', true);
+        $element3 = $this->buildAcceptableElement('test.element3', false);
         $this->collection->add($element1);
         $this->collection->add($element2);
         $this->collection->add($element3);
         $res = $this->collection->filter(static function ($e) {
-            return 'test.element2' === $e->getName();
+            return $e->getOther();
         });
         self::assertEquals(['test.element2' => $element2], $res->toArray());
     }
