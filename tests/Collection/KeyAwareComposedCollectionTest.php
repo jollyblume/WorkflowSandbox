@@ -39,6 +39,14 @@ class KeyAwareComposedCollectionTest extends TestCase
         $this->assertEquals([], $collection->getKeyAwarePropertyNames());
     }
 
+    public function testSetKeyAwarePropertyNamesStringBecomesDefault() {
+        $collection = $this->buildCollection([], 'default.property');
+        $expected = [
+            '__DEFAULT_PROPERTY_NAME__' => 'default.property',
+        ];
+        $this->assertEquals($expected, $collection->getKeyAwarePropertyNames());
+    }
+
     public function testSetKeyAwarePropertyNamesArrayWithDefaultSet() {
         $expected = [
             '__DEFAULT_PROPERTY_NAME__' => 'default.property',
@@ -47,12 +55,12 @@ class KeyAwareComposedCollectionTest extends TestCase
         $this->assertEquals($expected, $collection->getKeyAwarePropertyNames());
     }
 
-    public function testSetKeyAwarePropertyNamesStringBecomesDefault() {
-        $collection = $this->buildCollection([], 'default.property');
-        $expected = [
-            '__DEFAULT_PROPERTY_NAME__' => 'default.property',
+    public function testSetKeyAwarePropertyNamesArrayWithIndexedDefault() {
+        $propertyNames = [
+            'default.property',
         ];
-        $this->assertEquals($expected, $collection->getKeyAwarePropertyNames());
+    $collection = $this->buildCollection([], $propertyNames);
+        $this->assertEquals('default.property', $collection->getKeyAwarePropertyNameDefault());
     }
 
     /** @expectedException \Exception */
@@ -301,6 +309,5 @@ class KeyAwareComposedCollectionTest extends TestCase
         foreach ($elements as $key => $element) {
             $collection->set($key, $element);
         }
-    }
     }
 }

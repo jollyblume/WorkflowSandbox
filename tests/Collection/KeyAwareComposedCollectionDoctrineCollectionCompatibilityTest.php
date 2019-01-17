@@ -6,6 +6,6 @@ use App\Collection\KeyAwareComposedArrayCollection;
 
 class KeyAwareComposedCollectionDoctrineCollectionCompatibilityTest extends BaseCollectionTest {
     public function setup() {
-        $this->collection = new KeyAwareComposedArrayCollection();
+        $this->collection = new KeyAwareComposedArrayCollection([], 'name');
     }
 }

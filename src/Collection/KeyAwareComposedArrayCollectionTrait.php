@@ -70,9 +70,6 @@ trait KeyAwareComposedArrayCollectionTrait
                 '__DEFAULT_PROPERTY_NAME__' => $propertyNames,
             ];
         }
-        if (!is_array($propertyNames)) {
-            throw new \Exception();
-        }
         $this->keyAwarePropertyNames = $propertyNames;
     }
 
