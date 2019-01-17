@@ -10,7 +10,7 @@ use Symfony\Component\Workflow\Marking as BaseMarking;
 use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use App\Workflow\MultiTenantMarkingStoreBackend;
+use App\Workflow\MultiTenantMarkingStoreBackendInterface;
 use App\Exception\PropImmutableException;
 use App\Exception\OutOfScopeException;
 use App\Exception\PropRequiredException;
@@ -49,23 +49,38 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
     /**
      * Marking store backend
      *
-     * @var MultiTenantMarkingStoreBackend $backend
+     * @var MultiTenantMarkingStoreBackendInterface $backend
      */
     private $backend;
 
-    public function __construct(MultiTenantMarkingStoreBackend $backend) {
+    public function __construct(MultiTenantMarkingStoreBackendInterface $backend) {
         $this->backend = $backend;
         $this->markingStoreId = $backend->createId(self::MARKING_STORE_NAME);
     }
 
+    /**
+    * Get this marking store id
+    *
+    * @return string markingStoreId
+    */
     public function getMarkingStoreId() :string {
         return $this->markingStoreId;
     }
 
+    /**
+     * Get the marking store persistance backend
+     *
+     * @return MultiTenantMarkingStoreBackendInterface
+     */
     public function getMarkingStoreBackend() {
         return $this->backend;
     }
 
+    /**
+     * Assert a subject is valid
+     *
+     * @throws OutOfScopeException
+     */
     protected function assertValidSubject($subject) {
         $isReadable = $this->isPropertyValueReadable($subject, self::MARKING_ID_PROPERTY);
         if (!$isReadable) {
@@ -78,6 +93,19 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
         }
     }
 
+    /**
+     * Get the markingId from a subject (token)
+     *
+     * Side effect:
+     *  If the subject doesn't have a markingId, one will be created and applied.
+     *
+     * @param mixed $subject Must support MarkableSubjectInterface
+     * @return string markingId
+     * @throws OutOfScopeException Must support MarkableSubjectInterface
+     *                             MarkableSubjectInterface does not have to be
+     *                             implemented by the subject. The methods from
+     *                             the interface must be implemented.
+     */
     public function getMarkingId($subject) {
         $this->assertValidSubject($subject);
         $markingId = $this->getPropertyValue($subject, self::MARKING_ID_PROPERTY);
@@ -92,12 +120,11 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
         return $markingId;
     }
 
-    public function getMarking($subject) {
-        $markingId = $this->getMarkingId($subject);
-        $markingStoreId = $this->getMarkingStoreId();
-        return $this->getMarkingStoreBackend()->getMarking($markingStoreId, $markingId);
-    }
-
+    /**
+    * Assert the markingId from both $subject and $marking match
+    *
+    * @throws \Exception
+    */
     protected function assertIdMatchesMarking($subject, Marking $marking) {
         $markingId = $this->getMarkingId($subject);
         $expectedMarkingId = $marking->getMarkingId();
@@ -106,6 +133,30 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
         }
     }
 
+    /**
+     * Get a subject's workflow marking for this marking store
+     *
+     * @param string $subject The subject or token
+     * @return BaseMarking The subject's marking within this marking store.
+     *                     BaseMarking is the default when no marking exists for
+     *                      the subject within this store.
+     *                     Marking (inherited from BaseMarking) is returned when
+     *                      results come from the backend.
+     */
+    public function getMarking($subject) {
+        $markingId = $this->getMarkingId($subject);
+        $markingStoreId = $this->getMarkingStoreId();
+        return $this->getMarkingStoreBackend()->getMarking($markingStoreId, $markingId);
+    }
+
+    /**
+     * Set the subject's workflow marking for this marking store
+     *
+     * @param string $subject The subject or token
+     * @param BaseMarking The subject's marking within this marking store.
+     *                    The BaseMarking is converted to a Marking internally.
+     * @return self
+     */
     public function setMarking($subject, BaseMarking $marking) {
         $this->assertValidSubject($subject);
         if (!$marking instanceof Marking) {
