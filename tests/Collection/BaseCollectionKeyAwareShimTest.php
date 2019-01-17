@@ -15,7 +15,7 @@ use function is_string;
 
 abstract class BaseCollectionKeyAwareShimTest extends BaseCollectionTest
 {
-    abstract protected function buildAcceptableElement(string $keyValue);
+    abstract protected function buildAcceptableElement(string $keyValue, bool $otherValue = false);
 
     public function testIssetAndUnset() : void
     {
@@ -106,161 +106,200 @@ abstract class BaseCollectionKeyAwareShimTest extends BaseCollectionTest
 
     public function testFirstAndLast() : void
     {
-        $this->collection->add('one');
-        $this->collection->add('two');
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection->add($element1);
+        $this->collection->add($element2);
+        $this->collection->add($element3);
 
-        self::assertEquals($this->collection->first(), 'one');
-        self::assertEquals($this->collection->last(), 'two');
+        self::assertEquals($this->collection->first(), $element1);
+        self::assertEquals($this->collection->last(), $element3);
     }
 
     public function testArrayAccess() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection->add($element1);
+        $this->collection->add($element2);
+        $this->collection->add($element3);
 
-        self::assertEquals($this->collection[0], 'one');
-        self::assertEquals($this->collection[1], 'two');
+        self::assertEquals($this->collection['test.element1'], $element1);
+        self::assertEquals($this->collection['test.element3'], $element3);
 
-        unset($this->collection[0]);
-        self::assertEquals($this->collection->count(), 1);
+        unset($this->collection['test.element3']);
+        self::assertCount(2, $this->collection);
     }
 
     public function testContainsKey() : void
     {
-        $this->collection[5] = 'five';
-        self::assertTrue($this->collection->containsKey(5));
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $this->collection['test.element1'] = $element1;
+        self::assertTrue($this->collection->containsKey('test.element1'));
     }
 
     public function testContains() : void
     {
-        $this->collection[0] = 'test';
-        self::assertTrue($this->collection->contains('test'));
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $this->collection['test.element1'] = $element1;
+        self::assertTrue($this->collection->contains($element1));
     }
 
     public function testSearch() : void
     {
-        $this->collection[0] = 'test';
-        self::assertEquals(0, $this->collection->indexOf('test'));
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $this->collection['test.element1'] = $element1;
+        self::assertEquals('test.element1', $this->collection->indexOf($element1));
     }
 
     public function testGet() : void
     {
-        $this->collection[0] = 'test';
-        self::assertEquals('test', $this->collection->get(0));
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $this->collection['test.element1'] = $element1;
+        self::assertEquals($element1, $this->collection->get('test.element1'));
     }
 
     public function testGetKeys() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
-        self::assertEquals([0, 1], $this->collection->getKeys());
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $this->collection[] = $element3;
+        $expected = [
+            'test.element1',
+            'test.element2',
+            'test.element3',
+        ];
+        self::assertEquals($expected, $this->collection->getKeys());
     }
 
     public function testGetValues() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
-        self::assertEquals(['one', 'two'], $this->collection->getValues());
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $this->collection[] = $element3;
+        $expected = [
+            $element1,
+            $element2,
+            $element3,
+        ];
+        self::assertEquals($expected, $this->collection->getValues());
     }
 
     public function testCount() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
-        self::assertEquals($this->collection->count(), 2);
-        self::assertEquals(count($this->collection), 2);
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $this->collection[] = $element3;
+        self::assertEquals(3, $this->collection->count());
+        self::assertEquals(3, count($this->collection));
     }
 
     public function testForAll() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $this->collection[] = $element3;
         self::assertEquals($this->collection->forAll(static function ($k, $e) {
-            return is_string($e);
+            return is_string($k);
         }), true);
         self::assertEquals($this->collection->forAll(static function ($k, $e) {
-            return is_array($e);
+            return is_array($k);
         }), false);
     }
 
     public function testPartition() : void
     {
-        $this->collection[] = true;
-        $this->collection[] = false;
+        $element1 = $this->buildAcceptableElement('test.element1', false);
+        $element2 = $this->buildAcceptableElement('test.element2', true);
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
         $partition          = $this->collection->partition(static function ($k, $e) {
-            return $e === true;
+            return $e->getOther() === true;
         });
-        self::assertEquals($partition[0][0], true);
-        self::assertEquals($partition[1][0], false);
+        self::assertEquals($element2, $partition[0]['test.element2']);
+        self::assertEquals($element1, $partition[1]['test.element1']);
     }
 
     public function testClear() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $this->collection[] = $element3;
         $this->collection->clear();
-        self::assertEquals($this->collection->isEmpty(), true);
+        self::assertCount(0, $this->collection);
     }
 
     public function testRemove() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
-        $el                 = $this->collection->remove(0);
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $missingElement = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $el                 = $this->collection->remove('test.element2');
 
-        self::assertEquals('one', $el);
-        self::assertEquals($this->collection->contains('one'), false);
-        self::assertNull($this->collection->remove(0));
+        self::assertEquals($element2, $el);
+        self::assertFalse($this->collection->contains('test.element2'));
+        self::assertNull($this->collection->remove('test.element3'));
     }
 
     public function testRemoveElement() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $missingElement = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
 
-        self::assertTrue($this->collection->removeElement('two'));
-        self::assertFalse($this->collection->contains('two'));
-        self::assertFalse($this->collection->removeElement('two'));
+        self::assertTrue($this->collection->removeElement($element2));
+        self::assertFalse($this->collection->contains('test.element2'));
+        self::assertFalse($this->collection->removeElement($missingElement));
     }
 
     public function testSlice() : void
     {
-        $this->collection[] = 'one';
-        $this->collection[] = 'two';
-        $this->collection[] = 'three';
+        $element1 = $this->buildAcceptableElement('test.element1');
+        $element2 = $this->buildAcceptableElement('test.element2');
+        $element3 = $this->buildAcceptableElement('test.element3');
+        $this->collection[] = $element1;
+        $this->collection[] = $element2;
+        $this->collection[] = $element3;
 
         $slice = $this->collection->slice(0, 1);
         self::assertInternalType('array', $slice);
-        self::assertEquals(['one'], $slice);
+        self::assertEquals(['test.element1' => $element1], $slice);
 
         $slice = $this->collection->slice(1);
-        self::assertEquals([1 => 'two', 2 => 'three'], $slice);
+        self::assertEquals(['test.element2' => $element2, 'test.element3' => $element3], $slice);
 
         $slice = $this->collection->slice(1, 1);
-        self::assertEquals([1 => 'two'], $slice);
-    }
-
-    protected function fillMatchingFixture() : void
-    {
-        $std1               = new stdClass();
-        $std1->foo          = 'bar';
-        $this->collection[] = $std1;
-
-        $std2               = new stdClass();
-        $std2->foo          = 'baz';
-        $this->collection[] = $std2;
+        self::assertEquals(['test.element2' => $element2], $slice);
     }
 
     public function testCanRemoveNullValuesByKey() : void
     {
-        $this->collection->add(null);
-        $this->collection->remove(0);
-        self::assertTrue($this->collection->isEmpty());
+        $this->markTestSkipped('Not applicable');
     }
 
     public function testCanVerifyExistingKeysWithNullValues() : void
     {
-        $this->collection->set('key', null);
-        self::assertTrue($this->collection->containsKey('key'));
+        $this->markTestSkipped('Not applicable');
     }
 }
