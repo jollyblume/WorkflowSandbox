@@ -12,4 +12,10 @@ class MarkingTest extends TestCase
         $marking = new Marking('test.marking-id.1', array('a' => 1));
         $this->assertEquals('test.marking-id.1', $marking->getMarkingId());
     }
+
+    public function testToString() {
+        $marking = new Marking('test.marking-id.1', array('a' => 1));
+        $expectedString = get_class($marking) . '@' . spl_object_hash($marking);
+        $this->assertEquals($expectedString, strval($marking));
+    }
 }

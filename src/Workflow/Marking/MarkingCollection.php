@@ -11,15 +11,16 @@ class MarkingCollection implements ComposedArrayCollectionInterface {
     private $markingStoreId;
 
     public function __construct(string $markingStoreId, array $elements = []) {
-        $this->strictCollectionMembership = true;
         $this->markingStoreId = $markingStoreId;
-        $this->setKeyPropertyNames('markingId');
+        $this->setStrictCollectionMembership(true);
+        $this->setKeyAwarePropertyNames('markingId');
         if ($elements) {
             $this->initializeComposedChildren($elements);
         }
     }
 
     public function getMarkingStoreId() {
-        return $this->markingStoreId;
+        $markingStoreId = $this->markingStoreId;
+        return $markingStoreId;
     }
 }

@@ -89,7 +89,7 @@ abstract class BaseArrayCollectionKeyAwareShimTest extends BaseArrayCollectionTe
         foreach ($elements as $key => $element) {
             $this->assertTrue($collection->containsKey($key));
         }
-        $this->assertFalse($collection->containsKey($missingElement->getName()));
+        $this->assertFalse($collection->containsKey('test.id.zZ'));
     }
 
     public function testContains() : void
