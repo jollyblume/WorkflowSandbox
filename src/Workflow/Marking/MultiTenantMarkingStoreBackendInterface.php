@@ -3,16 +3,8 @@
 namespace App\Workflow\Marking;
 
 use Symfony\Component\Workflow\Marking;
-use Ramsey\Uuid\Uuid;
-use App\Workflow\Marking\MultiTenantMarkingStoreBackendInterface;
 
-/**
- * MultiTenantMarkingStoreBackend
- *
- * MultiTenantMarkingStoreBackend persists the markings for multiple workflows and
- * workflow subjects (tokens).
- */
-class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInterface {
+interface MultiTenantMarkingStoreBackendInterface {
     /**
      * Get a workflow marking from the backend
      *
@@ -20,9 +12,7 @@ class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInter
      * @param string $markingId
      * @return Marking The workflow marking
      */
-    public function getMarking(string $markingStoreId, string $markingId) {
-
-    }
+    public function getMarking(string $markingStoreId, string $markingId);
 
     /**
      * Persist a workflow marking to the backend
@@ -32,9 +22,7 @@ class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInter
      * @param Marking $marking The workflow marking
      * @return self
      */
-    public function setMarking(string $markingStoreId, string $markingId, Marking $marking) {
-
-    }
+    public function setMarking(string $markingStoreId, string $markingId, Marking $marking);
 
     /**
      * Create a new Marking id
@@ -52,7 +40,5 @@ class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInter
      * @return string UUID string
      * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
-    public function createId(string $name = 'workflow.general') :string {
-        return Uuid::uuid3(Uuid::NAMESPACE_DNS, $name);
-    }
+    public function createId(string $name = 'workflow.general') :string;
 }
