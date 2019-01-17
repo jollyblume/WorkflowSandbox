@@ -70,8 +70,7 @@ class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInter
             $store = new MarkingCollection($markingStoreId);
             $stores[] = $store;
         }
-        $markingId = $marking->getMarkingId();
-        $store[$markingId] = $marking;
+        $store[] = $marking;
         return self;
     }
 
