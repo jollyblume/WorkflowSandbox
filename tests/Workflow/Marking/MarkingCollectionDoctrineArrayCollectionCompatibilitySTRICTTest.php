@@ -3,6 +3,7 @@
 namespace App\Tests\Collection;
 
 use App\Workflow\Marking\MarkingCollection;
+use App\Tests\Collection\BaseArrayCollectionKeyAwareShimTest;
 use Doctrine\Common\Collections\Collection;
 
 class MarkingCollectionDoctrineArrayCollectionCompatibilitySTRICTTest extends BaseArrayCollectionKeyAwareShimTest {
