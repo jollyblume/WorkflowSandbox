@@ -10,6 +10,7 @@ use Symfony\Component\Workflow\Marking as BaseMarking;
 use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use App\Workflow\Marking;
 use App\Exception\PropImmutableException;
 use App\Exception\OutOfScopeException;
 use App\Exception\PropRequiredException;

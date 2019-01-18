@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Workflow\Marking;
+namespace App\Workflow;
 
+use App\Workflow\Marking\MarkingConverterTrait;
 use Symfony\Component\Workflow\Marking as BaseMarking;
 
 class Marking extends BaseMarking {
     use MarkingConverterTrait;
-    
+
     /**
      * Marking UUID
      *

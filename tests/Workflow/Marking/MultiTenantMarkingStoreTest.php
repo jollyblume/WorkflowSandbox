@@ -5,7 +5,7 @@ namespace App\Tests\Workflow\Marking;
 use App\Workflow\Marking\MultiTenantMarkingStore;
 use App\Workflow\Marking\MultiTenantMarkingStoreBackend;
 use App\Workflow\Marking\MarkingStoreCollection;
-use App\Workflow\Marking\Marking;
+use App\Workflow\Marking;
 use Symfony\Component\Workflow\Marking as BaseMarking;
 use PHPUnit\Framework\TestCase;
 

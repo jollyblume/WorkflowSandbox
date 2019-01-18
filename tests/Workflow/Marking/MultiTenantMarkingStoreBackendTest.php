@@ -3,7 +3,7 @@
 namespace App\Tests\Workflow\Marking;
 
 use App\Workflow\Marking\MultiTenantMarkingStoreBackend;
-use App\Workflow\Marking\Marking;
+use App\Workflow\Marking;
 use App\Workflow\Marking\MarkingStoreCollection;
 use Ramsey\Uuid\Uuid;
 use App\Validator\Validator;

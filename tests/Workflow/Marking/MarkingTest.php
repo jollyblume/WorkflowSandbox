@@ -3,7 +3,7 @@
 namespace App\Tests\Workflow\Marking;
 
 use PHPUnit\Framework\TestCase;
-use App\Workflow\Marking\Marking;
+use App\Workflow\Marking;
 
 class MarkingTest extends TestCase
 {
