@@ -5,7 +5,7 @@ namespace App\Workflow\Marking;
 use App\Collection\ComposedArrayCollectionInterface;
 use App\Collection\KeyAwareComposedArrayCollectionTrait;
 
-class MarkingStoreCollection implements ComposedArrayCollectionInterface {
+class MarkingStoreCollection implements ComposedArrayCollectionInterface, MarkingStoreCollectionInterface {
     use KeyAwareComposedArrayCollectionTrait;
 
     private $markingStoreCollectionId;
