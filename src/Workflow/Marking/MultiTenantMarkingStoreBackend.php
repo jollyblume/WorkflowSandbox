@@ -42,9 +42,6 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
      */
     public function getMarking(string $markingStoreId, string $markingId) {
         $stores = $this->getMarkingStoreCollection();
-        if (!$stores) {
-            return null;
-        }
         $store = $stores[$markingStoreId] ?? null;
         if (!$store) {
             return null;

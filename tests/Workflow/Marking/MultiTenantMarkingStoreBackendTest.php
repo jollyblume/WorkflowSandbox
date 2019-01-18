@@ -96,4 +96,33 @@ class MultiTenantMarkingStoreBackendTest extends TestCase {
 
         return $backend;
     }
+
+    /** @depends testSetMarkingOkWhenMultipleStoresCreated */
+    public function testGetMarkingNullWhenMarkingCollectionNotExist($backend) {
+        $founda1 = $backend->getMarking('not-a-store', 'test.marking-a1');
+        $founda2 = $backend->getMarking('not-a-store', 'test.marking-a2');
+        $foundb1 = $backend->getMarking('not-a-store', 'test.marking-b1');
+        $foundb2 = $backend->getMarking('not-a-store', 'test.marking-b2');
+
+        $this->assertNull($founda1);
+        $this->assertNull($founda2);
+        $this->assertNull($foundb1);
+        $this->assertNull($foundb2);
+
+        return $backend;
+    }
+
+    /** @depends testGetMarkingNullWhenMarkingCollectionNotExist */
+    public function testGetMarkingNullWhenMarkingNotExist($backend) {
+        $markingStore1 = 'test.marking-store-1';
+        $found1 = $backend->getMarking($markingStore1, 'test.marking-missing');
+
+        $markingStore2 = 'test.marking-store-2';
+        $found2 = $backend->getMarking($markingStore2, 'test.marking-missing');
+
+        $this->assertNull($found1);
+        $this->assertNull($found2);
+
+        return $backend;
+    }
 }
