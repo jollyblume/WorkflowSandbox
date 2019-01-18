@@ -3,6 +3,7 @@
 namespace App\Workflow\Marking;
 
 use App\Event\Workflow\BackendEvent as Event;
+use App\Event\Workflow\BackendPersistEvent as PersistEvent;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Ramsey\Uuid\Uuid;
@@ -91,6 +92,7 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
             $this->newStore($markingStoreId, $marking, $stores);
         }
         $store[] = $marking;
+        $this->setMark($markingStoreId, $marking, $stores);
         return $this;
     }
 
@@ -116,6 +118,15 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
 
     protected function createBackendEvent(string $markingStoreId, Marking $marking, MarkingStoreCollection $store) {
         $event = new BackendEvent(
+            private $markingStoreId,
+            private $marking,
+            private $stores
+        );
+        return $event;
+    }
+
+    protected function createPersistEvent(string $markingStoreId, Marking $marking, MarkingStoreCollection $store) {
+        $event = new PersistEvent(
             private $markingStoreId,
             private $marking,
             private $stores
@@ -153,6 +164,12 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
     }
 
     protected function markingSet(string $markingStoreId, Marking $marking, MarkingCollection $stores = null) {
+        $event = $this->createPersistEvent($markingStoreId, $marking, $stores);
+        $this->dispatchBackendEvent('mark.persist', $event);
+        if ($stores !== $event->getStores()) {
+            $stores = $event->getStores();
+            $this->stores = $stores;
+        }
         $event = $this->createBackendEvent($markingStoreId, $marking, $stores);
         $this->dispatchBackendEvent('mark.set', $event);
         return $this;
