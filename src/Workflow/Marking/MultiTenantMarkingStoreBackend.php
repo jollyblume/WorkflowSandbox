@@ -26,7 +26,7 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
             $markingStoreCollectionId = $this->createId(self::MARKING_STORE_COLLECTION_NAME);
             $markingStoreCollection = new MarkingStoreCollection($markingStoreCollectionId);
         }
-        $this->MarkingStoreCollection = $markingStoreCollection;
+        $this->markingStoreCollection = $markingStoreCollection;
     }
 
     protected function getMarkingStoreCollection() {
@@ -66,12 +66,11 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
         $stores = $this->getMarkingStoreCollection();
         $store = $stores[$markingStoreId] ?? null;
         if (!$store) {
-            $markingStoreId = $this->createId(self::MARKING_STORE_NAME);
             $store = new MarkingCollection($markingStoreId);
             $stores[] = $store;
         }
         $store[] = $marking;
-        return self;
+        return $this;
     }
 
     /**
