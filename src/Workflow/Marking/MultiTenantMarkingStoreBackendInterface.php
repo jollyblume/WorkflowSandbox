@@ -6,6 +6,13 @@ use Symfony\Component\Workflow\Marking;
 
 interface MultiTenantMarkingStoreBackendInterface {
     /**
+     * Get the backendId
+     *
+     * @return string backendId
+     */
+    public function getBackendId();
+    
+    /**
      * Get a workflow marking from the backend
      *
      * @param string $markingStoreId

@@ -16,11 +16,17 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
     const MARKING_STORE_NAME = 'workflow.marking-store';
 
     /**
+     * @var string $backendId
+     */
+    private $backendId;
+
+    /**
      * @var MarkingStoreCollection $markingStoreCollection
      */
     private $markingStoreCollection;
 
     public function __construct(?MarkingStoreCollection $markingStoreCollection = null) {
+        $this->backendId = $this->createId('workflow.backend');
         if (!$markingStoreCollection) {
             $markingStoreCollectionId = $this->createId(self::MARKING_STORE_COLLECTION_NAME);
             $markingStoreCollection = new MarkingStoreCollection($markingStoreCollectionId);
@@ -30,6 +36,15 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
 
     protected function getMarkingStoreCollection() {
         return $this->markingStoreCollection;
+    }
+
+    /**
+     * Get the backendId
+     *
+     * @return string backendId
+     */
+    public function getBackendId() {
+        return $this->backendId;
     }
 
     /**

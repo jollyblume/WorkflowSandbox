@@ -22,6 +22,13 @@ class MultiTenantMarkingStoreBackendTest extends TestCase {
         $this->assertTrue($validator->validate($id));
     }
 
+    public function testGetBackendId() {
+        $backend = $this->buildBackend();
+        $id = $backend->getBackendId();
+        $validator = new Validator();
+        $this->assertTrue($validator->validate($id));
+    }
+
     public function testSetMarkingOkWhenStoreNotCreated() {
         $backend = $this->buildBackend();
         $markingStoreId = 'workflow.test-marking-store';
