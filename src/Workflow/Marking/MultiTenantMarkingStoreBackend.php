@@ -2,7 +2,9 @@
 
 namespace App\Workflow\Marking;
 
+use App\Event\Workflow\BackendEvent as Event;
 use Symfony\Component\Workflow\Marking;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -25,13 +27,19 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
      */
     private $markingStoreCollection;
 
-    public function __construct(?MarkingStoreCollection $markingStoreCollection = null) {
+    /**
+     * @var EventDispatcherInterface $dispatcher
+     */
+    private $dispatcher;
+
+    public function __construct(MarkingStoreCollection $markingStoreCollection = null, EventDispatcherInterface $dispatcher = null) {
         $this->backendId = $this->createId('workflow.backend');
         if (!$markingStoreCollection) {
             $markingStoreCollectionId = $this->createId(self::MARKING_STORE_COLLECTION_NAME);
             $markingStoreCollection = new MarkingStoreCollection($markingStoreCollectionId);
         }
         $this->markingStoreCollection = $markingStoreCollection;
+        $this->dispatcher = $dispatcher;
     }
 
     protected function getMarkingStoreCollection() {
@@ -75,10 +83,12 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
      */
     public function setMarking(string $markingStoreId, Marking $marking) {
         $stores = $this->getMarkingStoreCollection();
+        $this->settingMark($markingStoreId, $marking, $stores);
         $store = $stores[$markingStoreId] ?? null;
         if (!$store) {
             $store = new MarkingCollection($markingStoreId);
             $stores[] = $store;
+            $this->newStore($markingStoreId, $marking, $stores);
         }
         $store[] = $marking;
         return $this;
@@ -102,5 +112,49 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
      */
     public function createId(string $name = 'workflow.general') :string {
         return Uuid::uuid3(Uuid::NAMESPACE_DNS, $name);
+    }
+
+    protected function createBackendEvent(string $markingStoreId, Marking $marking, MarkingStoreCollection $store) {
+        $event = new BackendEvent(
+            private $markingStoreId,
+            private $marking,
+            private $stores
+        );
+        return $event;
+    }
+
+    protected function dispatchBackendEvent($names, BackendEvent $event) {
+        $dispatcher = $this->dispatcher;
+        if (!$dispatcher) {
+            return;
+        }
+        if (is_string($names)) {
+            $names = [$names];
+        }
+        if (!is_array($names)) {
+            throw new \Exception('$names must be string or array');
+        }
+        foreach ($names as $name) {
+            $fqName = sprintf('backend.%s', $name);
+            $dispatcher->dispatch($fqName, $event);
+        }
+    }
+
+    protected function settingMark(string $markingStoreId, Marking $marking, MarkingCollection $stores = null) {
+        $event = $this->createBackendEvent($markingStoreId, $marking, $stores);
+        $this->dispatchBackendEvent('mark.setting', $event);
+        return $this;
+    }
+
+    protected function newStore(string $markingStoreId, Marking $marking, MarkingCollection $stores = null) {
+        $event = $this->createBackendEvent($markingStoreId, $marking, $stores);
+        $this->dispatchBackendEvent('mark.newstore', $event);
+        return $this;
+    }
+
+    protected function markingSet(string $markingStoreId, Marking $marking, MarkingCollection $stores = null) {
+        $event = $this->createBackendEvent($markingStoreId, $marking, $stores);
+        $this->dispatchBackendEvent('mark.set', $event);
+        return $this;
     }
 }
