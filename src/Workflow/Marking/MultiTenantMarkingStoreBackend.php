@@ -12,7 +12,7 @@ use App\Workflow\Marking\MultiTenantMarkingStoreBackendInterface;
  * MultiTenantMarkingStoreBackend persists the markings for multiple workflows and
  * workflow subjects (tokens).
  */
-class MultiTenantMarkingStoreBackend extends MultiTenantMarkingStoreBackendInterface {
+class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendInterface {
     const MARKING_STORE_COLLECTION_NAME = 'workflow.marking-store-collection';
     const MARKING_STORE_NAME = 'workflow.marking-store';
 
