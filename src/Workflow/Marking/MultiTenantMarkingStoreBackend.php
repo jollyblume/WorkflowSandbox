@@ -4,7 +4,6 @@ namespace App\Workflow\Marking;
 
 use Symfony\Component\Workflow\Marking;
 use Ramsey\Uuid\Uuid;
-use App\Workflow\Marking\MultiTenantMarkingStoreBackendInterface;
 
 /**
  * MultiTenantMarkingStoreBackend

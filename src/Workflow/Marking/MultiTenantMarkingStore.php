@@ -10,7 +10,6 @@ use Symfony\Component\Workflow\Marking as BaseMarking;
 use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use App\Workflow\MultiTenantMarkingStoreBackendInterface;
 use App\Exception\PropImmutableException;
 use App\Exception\OutOfScopeException;
 use App\Exception\PropRequiredException;
@@ -33,7 +32,7 @@ use App\Traits\PropertyAccessorTrait;
  * identify this subject (token) throughout the marking store backend.
  */
 class MultiTenantMarkingStore implements MarkingStoreInterface {
-    use PropertyAccessorTrait;
+    use PropertyAccessorTrait, MarkingConverterTrait { convertPlacesForBaseMarking as public; }
 
     const MARKING_ID_PROPERTY = 'markingId';
     const MARKING_STORE_NAME = 'workflow.marking-store';
@@ -53,9 +52,30 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
      */
     private $backend;
 
-    public function __construct(MultiTenantMarkingStoreBackendInterface $backend) {
+    public function __construct(MultiTenantMarkingStoreBackendInterface $backend, string $markingStoreId = '') {
         $this->backend = $backend;
-        $this->markingStoreId = $backend->createId(self::MARKING_STORE_NAME);
+        if (!$markingStoreId) {
+            $markingStoreId = $backend->createId(self::MARKING_STORE_NAME);
+        }
+        $this->markingStoreId = $markingStoreId;
+    }
+
+    public function compareMarkings(BaseMarking $marking1, BaseMarking $marking2) {
+        $markingsEqual = true;
+        $isReadable1 = $this->isPropertyValueReadable($marking1, self::MARKING_ID_PROPERTY);
+        $isReadable2 = $this->isPropertyValueReadable($marking2, self::MARKING_ID_PROPERTY);
+        if ($isReadable1 && $isReadable2) {
+            $markingId1 = $this->getPropertyValue($marking1, self::MARKING_ID_PROPERTY);
+            $markingId2 = $this->getPropertyValue($marking2, self::MARKING_ID_PROPERTY);
+            $markingsEqual = $markingId1 === $markingId2;
+        }
+        $places1 = array_keys($marking1->getPlaces());
+        $places2 = array_keys($marking2->getPlaces());
+        $count1 = count($places1);
+        $count2 = count($places2);
+        $count3 = count(array_intersect($places1, $places2));
+        $placesEqual = ($count1 === $count2) && ($count2 === $count3);
+        return $markingsEqual && $placesEqual;
     }
 
     /**
@@ -146,7 +166,12 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
     public function getMarking($subject) {
         $markingId = $this->getMarkingId($subject);
         $markingStoreId = $this->getMarkingStoreId();
-        return $this->getMarkingStoreBackend()->getMarking($markingStoreId, $markingId);
+        $backend = $this->getMarkingStoreBackend();
+        $marking = $backend->getMarking($markingStoreId, $markingId);
+        if (!$marking) {
+            return new BaseMarking();
+        }
+        return $marking;
     }
 
     /**
@@ -162,12 +187,12 @@ class MultiTenantMarkingStore implements MarkingStoreInterface {
         if (!$marking instanceof Marking) {
             $markingId = $this->getMarkingId($subject) ;
             $places = $marking->getPlaces();
-            $marking = new Marking($subject, $places);
+            $marking = new Marking($markingId, $places);
         }
         $this->assertIdMatchesMarking($subject, $marking);
-
         $markingStoreId = $this->getMarkingStoreId();
-        $this->getMarkingStoreBackend()->setMarking($markingStoreId, $marking);
+        $backend = $this->getMarkingStoreBackend();
+        $backend->setMarking($markingStoreId, $marking);
         return $this;
     }
 }

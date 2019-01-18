@@ -5,6 +5,8 @@ namespace App\Workflow\Marking;
 use Symfony\Component\Workflow\Marking as BaseMarking;
 
 class Marking extends BaseMarking {
+    use MarkingConverterTrait;
+    
     /**
      * Marking UUID
      *
@@ -14,6 +16,7 @@ class Marking extends BaseMarking {
 
     public function __construct(string $markingId, array $places = []) {
         $this->markingId = $markingId;
+        $places = $this->convertPlacesForBaseMarking($places);
         parent::__construct($places);
     }
 
