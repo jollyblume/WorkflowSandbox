@@ -6,7 +6,8 @@ use App\Workflow\PersistStrategyInterface;
 use App\Workflow\Marking\MarkingStoreCollectionInterface as StoreCollectionInterface;
 use App\Document\PhpcrMarkingStoreCollection as StoreCollection;
 use App\Document\PhpcrMarkingCollection as MarkingCollection;
-use App\Document\PhpcrMarking as Marking;
+use App\Document\PhpcrMarking;
+use App\Workflow\Marking as BaseMarking;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 class PhpcrPersistStrategy implements PersistStrategyInterface {
@@ -41,7 +42,7 @@ class PhpcrPersistStrategy implements PersistStrategyInterface {
         return $subject;
     }
 
-    protected getMetadata(StoreCollectionInterface $store) {
+    protected function getMetadata(StoreCollectionInterface $store) {
         $subject = $this->getClassFromSubject($store);
         $migrationMap = $this->migrationMap;
         if (!array_key_exists($subject, $migrationMap)) {
@@ -87,7 +88,7 @@ class PhpcrPersistStrategy implements PersistStrategyInterface {
         return $hasPath;
     }
 
-    public function executeMigrationPath(StoreCollectionInterface $originalStore) {
+    public function executeMigration(StoreCollectionInterface $originalStore) {
         if (!$this->hasMigrationPath($originalStore)) {
             throw new \Exception('no execution path found');
         }
@@ -99,16 +100,17 @@ class PhpcrPersistStrategy implements PersistStrategyInterface {
             $markingElements = $originalMarkings->toArray();
             $markings = new MarkingCollection($markingsId, $markingElements);
             foreach ($markings as $markingId => $marking) {
-                $subjectId = $marking->getMarkingId();
                 $placeElements = $marking->getPlaces();
-                $marking = new Marking($subjectId, $placeElements);
+                $marking = new Marking($markingId, $placeElements);
             }
         }
         return $stores;
     }
 
-    public function persist(StoreCollectionInterface $store, string $markingStoreId, Marking $marking) {
-
+    public function persist(StoreCollectionInterface $store, string $markingStoreId, BaseMarking $marking) {
+        if ($marking instanceof PhpcrMarking) {
+            throw new \Exception();
+        }
     }
 
     public function flush() {

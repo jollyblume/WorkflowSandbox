@@ -2,14 +2,14 @@
 
 namespace App\Workflow;
 
-use App\Workflow\Marking\MarkingStoreCollectionInterface as CollectionInterface;
+use App\Workflow\Marking\MarkingStoreCollectionInterface as StoreCollectionInterface;
 
 interface PersistStrategyInterface {
-    public function isMigrationDisabled(CollectionInterface $store);
-    public function isMigrationValid(CollectionInterface $store);
-    public function isMigrated(CollectionInterface $store);
-    public function getMetadataValue(CollectionInterface $store, string $key);
-    public function executeMigration(CollectionInterface $store);
-    public function persist(CollectionInterface $store, string $storeId, Marking $marking);
+    public function isMigrationDisabled(StoreCollectionInterface $store);
+    public function isMigrationValid(StoreCollectionInterface $store);
+    public function isMigrated(StoreCollectionInterface $store);
+    public function getMetadataValue(StoreCollectionInterface $store, string $key);
+    public function executeMigration(StoreCollectionInterface $store);
+    public function persist(StoreCollectionInterface $store, string $storeId, Marking $marking);
     public function flush();
 }

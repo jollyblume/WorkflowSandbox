@@ -2,6 +2,6 @@
 
 namespace App\Document;
 
-use App\Workflow\Marking\Marking;
+use App\Workflow\Marking as BaseMarking;
 
-class PhpcrMarking extends Marking {}
+class PhpcrMarking extends BaseMarking {}

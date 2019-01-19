@@ -117,20 +117,12 @@ class MultiTenantMarkingStoreBackend implements MultiTenantMarkingStoreBackendIn
     }
 
     protected function createBackendEvent(string $markingStoreId, Marking $marking, MarkingStoreCollection $store) {
-        $event = new BackendEvent(
-            private $markingStoreId,
-            private $marking,
-            private $stores
-        );
+        $event = new BackendEvent($markingStoreId, $marking, $stores);
         return $event;
     }
 
     protected function createPersistEvent(string $markingStoreId, Marking $marking, MarkingStoreCollection $store) {
-        $event = new PersistEvent(
-            private $markingStoreId,
-            private $marking,
-            private $stores
-        );
+        $event = new PersistEvent($markingStoreId, $marking, $stores);
         return $event;
     }
 

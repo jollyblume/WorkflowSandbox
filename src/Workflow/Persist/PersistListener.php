@@ -12,11 +12,11 @@ class PersistListener implements EventSubscriberInterface
 {
     use PropertyAccessorTrait;
 
-    const 'STATUS_PROPERTY_NAME' = 'persistStatus';
-    const 'STATUS_DISABLED' = '__DISABLED__';
-    const 'STATUS_PERSISTABLE' = '__PERSISTABLE__';
-    const 'STATUS_MANAGED' = '__MANAGED__';
-    const 'STATUS_UNKNOWN' = '__UNKNOWN__';
+    const STATUS_PROPERTY_NAME = 'persistStatus';
+    const STATUS_DISABLED = '__DISABLED__';
+    const STATUS_PERSISTABLE = '__PERSISTABLE__';
+    const STATUS_MANAGED = '__MANAGED__';
+    const STATUS_UNKNOWN = '__UNKNOWN__';
 
     private $logger;
     private $strategy;
@@ -83,9 +83,9 @@ class PersistListener implements EventSubscriberInterface
         return $this->strategy->hasMigrationPath($stores);
     }
 
-    protected function executeMigrationPath(Event $event) {
+    protected function executeMigration(Event $event) {
         $stores = $event->getStores();
-        return $this->strategy->executeMigrationPath($stores);
+        return $this->strategy->executeMigration($stores);
     }
 
     protected function persist(Event $event) {
@@ -106,7 +106,7 @@ class PersistListener implements EventSubscriberInterface
         if (!$hasPath) {
             throw new \Exception('no migration path found');
         }
-        $stores = $this->executeMigrationPath($event);
+        $stores = $this->executeMigration($event);
         if ($stores !== $event->getStores()) {
             $event->setStores($stores);
             $storesId = $event->getMarkingStoreCollectionId();

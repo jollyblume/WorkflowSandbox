@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\Event as BaseEvent;
 class BackendEvent extends BaseEvent {
     private $markingStoreId;
     private $marking;
-    private $stores
+    private $stores;
     public function __construct(string $markingStoreId, Marking $marking, MarkingStoreCollectionInterface $stores) {
         $this->markingStoreId = $markingStoreId;
         $this->marking = $marking;
