@@ -4,9 +4,9 @@ namespace App\Workflow\Persist;
 
 use App\Workflow\PersistStrategyInterface;
 use App\Workflow\Marking\MarkingStoreCollectionInterface as StoreCollectionInterface;
-use App\Workflow\Marking\MarkingStoreCollection as StoreCollection;
-use App\Workflow\Marking\MarkingCollection as MarkingCollection;
-use App\Workflow\Marking;
+use App\Document\PhpcrMarkingStoreCollection as StoreCollection;
+use App\Document\PhpcrMarkingCollection as MarkingCollection;
+use App\Document\PhpcrMarking as Marking;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 class PhpcrPersistStrategy implements PersistStrategyInterface {
