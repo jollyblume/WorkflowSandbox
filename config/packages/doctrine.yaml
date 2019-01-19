@@ -51,18 +51,6 @@ doctrine_phpcr:
                 workspace: default
                 username: admin
                 password: admin
-            workflow:
-                backend:
-                    type: doctrinedbal
-                    connection: workflow
-                    # caches:
-                    #     meta: doctrine_cache.providers.phpcr_meta
-                    #     nodes: doctrine_cache.providers.phpcr_nodes
-                    logging: "%kernel.debug%"
-                    profiling: "%kernel.debug%"
-                workspace: workflow
-                username: admin
-                password: admin
     odm:
         auto_generate_proxy_classes: "%kernel.debug%"
         default_document_manager: ~
@@ -70,5 +58,3 @@ doctrine_phpcr:
             default:
                 session: default
                 auto_mapping: true
-            workflow:
-                session: workflow
