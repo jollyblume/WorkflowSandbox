@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Persist;
 
 use Psr\Log\LoggerInterface;
+use App\Workflow\Marking\MarkingStoreCollectionInterface as StoreCollectionInterface;
 use App\Workflow\Marking\MarkingStoreCollectionInterface as StoreCollectionInterface;
 use App\Workflow\BackEndPersistEvent as Event;
 use App\Traits\PropertyAccessorTrait;
