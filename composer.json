@@ -48,12 +48,16 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/front-end/",
+            "JBJ\\Common\\": "src/common/",
+            "JBJ\\Workflow\\": "src/workflow"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "App\\Tests\\": "tests/",
+            "JBJ\\Common\\Tests\\": "src/common/Tests/",
+            "JBJ\\Workflow\\Tests\\": "src/workflow/Tests//"
         }
     },
     "replace": {
