@@ -64,3 +64,11 @@ doctrine_phpcr:
                         type: xml
                         dir: '%kernel.project_dir%/config/doctrine'
                         prefix: 'App\Document'
+                        alias: 'App'
+                    JBJ\Workflow:
+                        is_bundle: false
+                        type: xml
+                        dir: '%kernel.project_dir%/config/doctrine'
+                        prefix: 'JBJ\Workflow\Document'
+                        alias: 'Workflow'
+
