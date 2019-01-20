@@ -1,0 +1,3 @@
+[submodule "src/Common"]
+	path = src/common
+	url = git@github.com:jollyblume/Common.git
