@@ -30,8 +30,8 @@ doctrine:
                 mappings:
                     App:
                         is_bundle: false
-                        type: annotation
-                        dir: '%kernel.project_dir%/src/Entity'
+                        type: xml
+                        dir: '%kernel.project_dir%/config/doctrine'
                         prefix: 'App\Entity'
                         alias: App
 
@@ -57,4 +57,10 @@ doctrine_phpcr:
         document_managers:
             default:
                 session: default
-                auto_mapping: true
+                auto_mapping: false
+                mappings:
+                    App:
+                        is_bundle: false
+                        type: xml
+                        dir: '%kernel.project_dir%/config/doctrine'
+                        prefix: 'App\Document'
