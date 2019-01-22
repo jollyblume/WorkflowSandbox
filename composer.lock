@@ -373,12 +373,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "0731608045c810f97e93483fdb6cbf43e7b3ba45"
+                "reference": "b90d6324d3056ed89641efe0cfdfb9947b9148a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0731608045c810f97e93483fdb6cbf43e7b3ba45",
-                "reference": "0731608045c810f97e93483fdb6cbf43e7b3ba45",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/b90d6324d3056ed89641efe0cfdfb9947b9148a3",
+                "reference": "b90d6324d3056ed89641efe0cfdfb9947b9148a3",
                 "shasum": ""
             },
             "require": {
@@ -390,7 +390,7 @@
             "require-dev": {
                 "doctrine/coding-standard": "^5.0",
                 "jetbrains/phpstorm-stubs": "^2018.1.2",
-                "phpstan/phpstan": "^0.10.1",
+                "phpstan/phpstan": "^0.11.1",
                 "phpunit/phpunit": "^7.4",
                 "symfony/console": "^2.0.5|^3.0|^4.0",
                 "symfony/phpunit-bridge": "^3.4.5|^4.0.5"
@@ -447,7 +447,7 @@
                 "php",
                 "queryobject"
             ],
-            "time": "2019-01-06T19:25:53+00:00"
+            "time": "2019-01-21T09:25:32+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -633,12 +633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "ae4bf490ef70c2dadd84786d24a2c86c7df46b39"
+                "reference": "2f88b7693408c10ec1311b5d996def5bb236bd57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/ae4bf490ef70c2dadd84786d24a2c86c7df46b39",
-                "reference": "ae4bf490ef70c2dadd84786d24a2c86c7df46b39",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/2f88b7693408c10ec1311b5d996def5bb236bd57",
+                "reference": "2f88b7693408c10ec1311b5d996def5bb236bd57",
                 "shasum": ""
             },
             "require": {
@@ -663,7 +663,10 @@
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Bundle\\MigrationsBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -690,7 +693,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2019-01-09T19:07:19+00:00"
+            "time": "2019-01-21T05:31:05+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -1202,12 +1205,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrinePHPCRBundle.git",
-                "reference": "4a525e58d87963fdf3102dd101c08f5c6a67bb04"
+                "reference": "447132197e35558c794dfb0fa745aaccf9ba6c38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrinePHPCRBundle/zipball/4a525e58d87963fdf3102dd101c08f5c6a67bb04",
-                "reference": "4a525e58d87963fdf3102dd101c08f5c6a67bb04",
+                "url": "https://api.github.com/repos/doctrine/DoctrinePHPCRBundle/zipball/447132197e35558c794dfb0fa745aaccf9ba6c38",
+                "reference": "447132197e35558c794dfb0fa745aaccf9ba6c38",
                 "shasum": ""
             },
             "require": {
@@ -1282,7 +1285,7 @@
                 "persistence",
                 "phpcr"
             ],
-            "time": "2018-11-28T16:14:32+00:00"
+            "time": "2019-01-21T16:11:35+00:00"
         },
         {
             "name": "doctrine/phpcr-odm",
@@ -2720,12 +2723,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "d71e7f0c9bfe1e0a9a0d20eac2af6dfdaa677e83"
+                "reference": "bb120bb10dd145f686865f434bbba53715f6ca53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d71e7f0c9bfe1e0a9a0d20eac2af6dfdaa677e83",
-                "reference": "d71e7f0c9bfe1e0a9a0d20eac2af6dfdaa677e83",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/bb120bb10dd145f686865f434bbba53715f6ca53",
+                "reference": "bb120bb10dd145f686865f434bbba53715f6ca53",
                 "shasum": ""
             },
             "require": {
@@ -2774,7 +2777,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2019-01-19T14:32:28+00:00"
+            "time": "2019-01-20T16:10:32+00:00"
         },
         {
             "name": "symfony/asset",
@@ -3606,12 +3609,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "670df540cb2e4f1a5c37fca1bb9b395b5c88df33"
+                "reference": "7417abad07bbc35c0124181934eaeb9b3f037ba2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/670df540cb2e4f1a5c37fca1bb9b395b5c88df33",
-                "reference": "670df540cb2e4f1a5c37fca1bb9b395b5c88df33",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/7417abad07bbc35c0124181934eaeb9b3f037ba2",
+                "reference": "7417abad07bbc35c0124181934eaeb9b3f037ba2",
                 "shasum": ""
             },
             "require": {
@@ -3620,6 +3623,7 @@
             },
             "require-dev": {
                 "composer/composer": "^1.0.2",
+                "symfony/dotenv": "^3.4|^4.0",
                 "symfony/phpunit-bridge": "^3.4.19|^4.1.8",
                 "symfony/process": "^2.7|^3.0|^4.0"
             },
@@ -3646,7 +3650,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2019-01-06T17:06:34+00:00"
+            "time": "2019-01-21T15:23:38+00:00"
         },
         {
             "name": "symfony/form",
@@ -3909,12 +3913,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "6454d0d1bbc75920659ef55d9234096df36b72f3"
+                "reference": "ae04a67272b6d6bf3a1cb416341f38beb3677b21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/6454d0d1bbc75920659ef55d9234096df36b72f3",
-                "reference": "6454d0d1bbc75920659ef55d9234096df36b72f3",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/ae04a67272b6d6bf3a1cb416341f38beb3677b21",
+                "reference": "ae04a67272b6d6bf3a1cb416341f38beb3677b21",
                 "shasum": ""
             },
             "require": {
@@ -3990,7 +3994,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2019-01-16T20:35:37+00:00"
+            "time": "2019-01-19T16:51:40+00:00"
         },
         {
             "name": "symfony/inflector",
