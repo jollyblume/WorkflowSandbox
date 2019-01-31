@@ -1,6 +1,3 @@
-[submodule "src/common"]
-	path = src/common
-	url = git@github.com:jollyblume/Common.git
 [submodule "src/workflow"]
 	path = src/workflow
 	url = git@github.com:jollyblume/Workflow.git
