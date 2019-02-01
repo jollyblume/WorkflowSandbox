@@ -1,3 +1,0 @@
-[submodule "src/workflow"]
-	path = src/workflow
-	url = git@github.com:jollyblume/Workflow.git
