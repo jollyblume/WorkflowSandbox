@@ -104,6 +104,9 @@
     "jollyblume/common": {
         "version": "dev-master"
     },
+    "jollyblume/workflow": {
+        "version": "dev-master"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -148,9 +151,6 @@
     },
     "ramsey/uuid": {
         "version": "3.x-dev"
-    },
-    "ramsey/uuid-console": {
-        "version": "dev-master"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",

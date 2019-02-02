@@ -19,14 +19,6 @@ services:
         resource: '../src/front-end/*'
         exclude:  '../src/front-end/{DependencyInjection,Migrations,Tests,Kernel.php}'
 
-    JBJ\Common\:
-        resource: '../src/common/*'
-        exclude:  '../src/common/{Tests}'
-
-    JBJ\Workflow\:
-        resource: '../src/workflow/*'
-        exclude:  '../src/workflow/{Document,Migrations,Tests,Workflow}'
-
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
