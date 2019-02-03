@@ -23,12 +23,20 @@
         <testsuite name="workflow">
             <directory>vendor/jollyblume/workflow/Tests</directory>
         </testsuite>
+        <testsuite name="session-strategy">
+            <directory>../SessionStrategy/Tests</directory>
+        </testsuite>
+        <testsuite name="phpcr-strategy">
+            <directory>../PhpcrStrategy/Tests</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
             <directory>src</directory>
             <directory>vendor/jollyblume</directory>
+            <directory>../SessionStrategy</directory>
+            <directory>../PhpcrStrategy</directory>
         </whitelist>
     </filter>
 

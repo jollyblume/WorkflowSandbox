@@ -101,9 +101,6 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "jollyblume/common": {
-        "version": "dev-master"
-    },
     "jollyblume/workflow": {
         "version": "dev-master"
     },

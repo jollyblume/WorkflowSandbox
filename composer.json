@@ -51,7 +51,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests"
+            "App\\Tests\\": "tests",
+            "JBJ\\Workflow\\StorageStrategy\\Session\\": "../SessionStrategy",
+            "JBJ\\Workflow\\StorageStrategy\\Phpcr\\": "../PhpcrStrategy"
         }
     },
     "replace": {

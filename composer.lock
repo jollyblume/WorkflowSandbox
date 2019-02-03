@@ -959,12 +959,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "cf7f94b0bcfbd7d9c240aee759dc6619bc9ad796"
+                "reference": "29d590e5124a4c867695a14f719237066e02d993"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/cf7f94b0bcfbd7d9c240aee759dc6619bc9ad796",
-                "reference": "cf7f94b0bcfbd7d9c240aee759dc6619bc9ad796",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/29d590e5124a4c867695a14f719237066e02d993",
+                "reference": "29d590e5124a4c867695a14f719237066e02d993",
                 "shasum": ""
             },
             "require": {
@@ -1033,7 +1033,7 @@
                 "migrations",
                 "php"
             ],
-            "time": "2019-01-22T20:56:11+00:00"
+            "time": "2019-02-02T13:05:41+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -1736,66 +1736,23 @@
             "time": "2015-08-30T16:36:01+00:00"
         },
         {
-            "name": "jollyblume/common",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jollyblume/Common.git",
-                "reference": "6b5a483bebad3da80eec54bfbe9096f3df3790af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jollyblume/Common/zipball/6b5a483bebad3da80eec54bfbe9096f3df3790af",
-                "reference": "6b5a483bebad3da80eec54bfbe9096f3df3790af",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/collections": "^1.5",
-                "moontoast/math": "^1.1",
-                "php": "^7.1.3",
-                "ramsey/uuid": "^3.8",
-                "symfony/property-access": "^4.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5",
-                "psr/log": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JBJ\\Common\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jolly Blume",
-                    "email": "jollyblume2@gmail.com"
-                }
-            ],
-            "description": "Common ArrayCollection and Exception classes",
-            "time": "2019-02-01T08:05:40+00:00"
-        },
-        {
             "name": "jollyblume/workflow",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jollyblume/Workflow.git",
-                "reference": "afc4c770b058be8439de251d4bdf50fe140026e1"
+                "reference": "c7ff7a187d796988b8ede41b09567d1e861d6827"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jollyblume/Workflow/zipball/afc4c770b058be8439de251d4bdf50fe140026e1",
-                "reference": "afc4c770b058be8439de251d4bdf50fe140026e1",
+                "url": "https://api.github.com/repos/jollyblume/Workflow/zipball/c7ff7a187d796988b8ede41b09567d1e861d6827",
+                "reference": "c7ff7a187d796988b8ede41b09567d1e861d6827",
                 "shasum": ""
             },
             "require": {
-                "jollyblume/common": "@dev",
+                "moontoast/math": "^1.1",
                 "php": "^7.1.3",
+                "ramsey/uuid": "^3.8",
                 "symfony/event-dispatcher": "^4.2",
                 "symfony/property-access": "^4.2",
                 "symfony/workflow": "^4.2"
@@ -1821,7 +1778,7 @@
                 }
             ],
             "description": "symfony/workflow compliant multi-tenant marking store",
-            "time": "2019-02-01T23:31:42+00:00"
+            "time": "2019-02-03T04:56:02+00:00"
         },
         {
             "name": "monolog/monolog",
