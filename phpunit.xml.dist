@@ -17,17 +17,11 @@
         <testsuite name="frontend">
             <directory>tests</directory>
         </testsuite>
-        <testsuite name="common">
-            <directory>vendor/jollyblume/common/Tests</directory>
+        <testsuite name="composed-collections">
+            <directory>vendor/jollyblume/composed-collections/Tests</directory>
         </testsuite>
-        <testsuite name="workflow">
-            <directory>vendor/jollyblume/workflow/Tests</directory>
-        </testsuite>
-        <testsuite name="session-strategy">
-            <directory>../SessionStrategy/Tests</directory>
-        </testsuite>
-        <testsuite name="phpcr-strategy">
-            <directory>../PhpcrStrategy/Tests</directory>
+        <testsuite name="marking-store">
+            <directory>vendor/jollyblume/marking-store/Tests</directory>
         </testsuite>
     </testsuites>
 

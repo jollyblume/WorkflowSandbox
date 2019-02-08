@@ -101,7 +101,10 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "jollyblume/workflow": {
+    "jollyblume/composed-collections": {
+        "version": "dev-master"
+    },
+    "jollyblume/marking-store": {
         "version": "dev-master"
     },
     "monolog/monolog": {
